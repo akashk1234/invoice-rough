@@ -80,13 +80,15 @@ $res = select($q);
 
             <div class="row">
 
-                <div class="col-lg-3">                   
-                    <a href="main/invoice-1.php?invoice_id=<?php echo $id; ?>">
+                 <div class="col-lg-3">                   
+                    <a href="main/invoice-6.php?invoice_id=<?php echo $id; ?>">
                         <div class="card hov">
-                            <img src="assets/img/1.png" class="card-img-top" alt="...">
+                            <img src="assets/img/6.png" class="card-img-top" alt="...">
                         </div>
                     </a>
                 </div>
+
+                
                 <div class="col-lg-3">                   
                     <a href="main/invoice-2.php?invoice_id=<?php echo $id; ?>">
                         <div class="card hov">
@@ -94,25 +96,8 @@ $res = select($q);
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-3">                   
-                    <a href="main/invoice-3.php?invoice_id=<?php echo $id; ?>">
-                        <div class="card hov">
-                            <img src="assets/img/3.png" class="card-img-top" alt="...">
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3">                   
-                    <a href="main/invoice-4.php?invoice_id=<?php echo $id; ?>">
-                        <div class="card hov">
-                            <img src="assets/img/4.png" class="card-img-top" alt="...">
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-
-            <div class="row">
-
+                
+          
                 <div class="col-lg-3">                   
                     <a href="main/invoice-5.php?invoice_id=<?php echo $id; ?>">
                         <div class="card hov">
@@ -120,13 +105,7 @@ $res = select($q);
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-3">                   
-                    <a href="main/invoice-6.php?invoice_id=<?php echo $id; ?>">
-                        <div class="card hov">
-                            <img src="assets/img/6.png" class="card-img-top" alt="...">
-                        </div>
-                    </a>
-                </div>
+                
                 <div class="col-lg-3">                   
                     <a href="main/invoice-7.php?invoice_id=<?php echo $id; ?>">
                         <div class="card hov">
@@ -134,15 +113,10 @@ $res = select($q);
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-3">                   
-                    <a href="main/invoice-8.php?invoice_id=<?php echo $id; ?>">
-                        <div class="card hov">
-                            <img src="assets/img/8.png" class="card-img-top" alt="...">
-                        </div>
-                    </a>
-                </div>
-
             </div>
+               
+
+            
 
 
 

@@ -81,7 +81,7 @@ if (isset($_GET['invoice_id'])) {
 <body>
 
 <!-- Invoice 7 start -->
-<div class="invoice-7 invoice-content">
+<div class="invoice-7 invoice-content" id="invoice">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -132,12 +132,12 @@ if (isset($_GET['invoice_id'])) {
                                 <div class="invoice-number text-end">
                                     <h4 class="inv-title-1">Invoice To</h4>
                                     <p class="invo-addr-1">
-                                    <?php echo $toName ?> <br/>
-                                    <?php echo $toBusiness ?> <br/>
-                                    <?php echo $toAddress ?> <br/>
-                                    <?php echo $toEmail ?> <br>
-                                    <?php echo $toPhone; ?> <br/>
-                                    <?php echo $cgst; ?> 
+                                    <?php if (!empty($toName)): ?><?php echo $toName ?> <br/> <?php endif; ?>
+                                    <?php if (!empty($toBusiness)): ?><?php echo $toBusiness ?> <br/><?php endif; ?>
+                                    <?php if (!empty($toAddress)): ?><?php echo $toAddress ?> <br/><?php endif; ?>
+                                    <?php if (!empty($toEmail)): ?><?php echo $toEmail ?> <br/><?php endif; ?>
+                                    <?php if ($toPhone != 0): ?><?php echo $toPhone; ?> <br/><?php endif; ?>
+                                    <?php if (!empty($cgst)): ?><?php echo $cgst; ?> <?php endif; ?>
                                     </p>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@ if (isset($_GET['invoice_id'])) {
                         <div class="table-responsive">
                             <table class="table invoice-table">
                                 <thead class="bg-active">
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <th>Description</th>
                                     <th class="text-center">Price</th>
                                     <th class="text-center">Quantity</th>
@@ -156,50 +156,56 @@ if (isset($_GET['invoice_id'])) {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <?php 
                                     $subtotal = 0;
                                     foreach($result as $res){
                                         $amount = $res['price'] * $res['quantity'];
                                         $subtotal += $amount;
                                     ?>
-                                    <td>
-                                        <div class="item-desc-1">
-                                            <span><?php echo $res['product'] ?></span>
-                                        </div>
+                                    <td class="p10">
+                                        <?php
+                                            $productData = str_replace('<br>', "\n", $res['product']); // Replace <br> with actual line breaks
+                                            $productLines = explode("\n", $productData);
+                                            echo '<strong>' . htmlentities($productLines[0]) . '</strong>';
+                                            // If you want to display the remaining lines, you can loop through them
+                                            for ($i = 1; $i < count($productLines); $i++) {
+                                            echo '<br>' . htmlentities($productLines[$i]);
+                                            }
+                                        ?>
                                     </td>
                                     <td class="text-center">₹<?php echo $res['price'] ?></td>
                                     <td class="text-center"><?php echo $res['quantity'] ?></td>
                                     <td class="text-right">₹<?php echo $amount ?></td>
-                                </tr>
+                                </tr style="page-break-inside: avoid;">
                                 <?php } ?>
                                 
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="3" class="text-end">SubTotal</td>
                                     <td class="text-right">₹<?php echo $subtotal ?></td>
                                 </tr>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="3" class="text-end"><?php echo $tax_type ?></td>
                                     <td class="text-right"><?php echo $tax ?>%</td>
                                 </tr>
                                 <?php if ($discount != 0): ?>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="3" class="text-end">Discount</td>
                                     <td class="text-right"><?php echo $discount ?>%</td>
                                 </tr>
                                 <?php endif; ?>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="3" class="text-end fw-bold">Grand Total</td>
                                     <td class="text-right fw-bold">₹<?php 
                                     $grandTotal = $subtotal - ($subtotal*$discount/100) + ($subtotal*$tax/100);
                                     echo $grandTotal;
                                     ?></td>
                                 </tr>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="2" class="text-end">Amount Paid</td>
                                     <td colspan="2" class=" ">₹<?php echo $amount_paid ?></td>
                                 </tr>
-                                <tr>
+                                <tr style="page-break-inside: avoid;">
                                     <td colspan="2" class="text-end fw-bold">Balance Due</td>
                                     <td colspan="2" class=" fw-bold">₹<?php 
                                     $balance = $grandTotal - $amount_paid;
@@ -211,14 +217,16 @@ if (isset($_GET['invoice_id'])) {
                         </div>
                     </div>
                     <div class="invoice-informeshon">
-                        <div class="row">
+                        <div class="row" style="page-break-inside: avoid;">
                             <div class="col-md-6 col-sm-6">
                                 <div class="payment-info mb-30">
                                     <h3 class="inv-title-1">Other Details</h3>
                                     <ul class="bank-transfer-list-1">
                                         <li><strong>Due date:</strong> <?php echo $due_date ?></li>
                                         <li><strong>Payment terms:</strong> <?php echo $payment_terms ?></li>
-                                        <li><strong>P O number:</strong> <?php echo $po_number ?></li>
+                                        <?php if (!empty($po_number)): ?> 
+                                                    <li><strong>P O Number:</strong> <?php echo $po_number ?></li>
+                                                <?php endif; ?>
                                         <li><strong>Notes:</strong> <?php echo $notes ?></li>
 
                                     </ul>
@@ -234,7 +242,7 @@ if (isset($_GET['invoice_id'])) {
                     </div>
 
                     <div class="invoice-contact clearfix">
-                        <div class="row g-0">
+                        <div class="row g-0" style="page-break-inside: avoid;">
                             <div class="col-lg-9 col-md-11 col-sm-12">
                                 <div class="contact-info">
                                     <a href=""><i class="fa fa-phone"></i> <?php echo $phone ?></a>
@@ -246,18 +254,36 @@ if (isset($_GET['invoice_id'])) {
                     </div>
 
                 </div>
-                <div class="invoice-btn-section clearfix d-print-none">
-                    <a href="javascript:window.print()" class="btn btn-lg btn-print">
-                        <i class="fa fa-print"></i> Print Invoice
-                    </a>
-                    <a id="invoice_download_btn" class="btn btn-lg btn-download btn-theme">
-                        <i class="fa fa-download"></i> Download Invoice
-                    </a>
-                </div>
+                
             </div>
         </div>
     </div>
 </div>
+
+<div class="invoice-btn-section clearfix d-print-none container p-5 text-center">
+    <a href="javascript:window.print()" class="btn btn-lg btn-print">
+        <i class="fa fa-print"></i> Print Invoice
+    </a>
+    <a id="download" class="btn btn-lg btn-download btn-theme">
+        <i class="fa fa-download"></i> Download Invoice
+    </a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
+<script type="text/javascript">
+   
+    document.querySelector('#download').onclick = function() {
+    var element = document.querySelector('#invoice'); // Use the wrapping div containing your invoice content
+    var pdfOptions = {
+        margin: [10, 0, 10, 0], // Add 20 units of margin to the top and bottom
+    };
+
+    html2pdf().from(element).set(pdfOptions).save();
+}
+
+</script>
 <!-- Invoice 7 end -->
 
 <script src="assets/js/jquery.min.js"></script>

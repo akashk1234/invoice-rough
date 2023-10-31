@@ -516,13 +516,6 @@ if (!isset($_SESSION['id'])) {
 
 
 
-
-
-
-
-
-
-
             <div class="row">
               <div class="col-lg-6 mb-3">
                 <div class="form-floating mb-3">
