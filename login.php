@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
                     </div>
 
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Email</label>
+                      <label for="yourUsername" class="form-label">Password</label>
                       <div class="input-group">
                         <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-lock"></i></span>
                         <input type="password" name="password" class="form-control" id="yourUsername" required>

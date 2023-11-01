@@ -19,6 +19,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Begin a transaction
     $conn->begin_transaction();
 
+    
+    $qry = "SELECT * FROM invoice WHERE invoice_id = ?";
+    $stmt_select = $conn->prepare($qry);
+    $stmt_select->bind_param("i", $invoice_id);
+    $stmt_select->execute();
+    $result = $stmt_select->get_result();
+    $res = $result->fetch_assoc();
+
+    if ($res) {
+        echo "<script>alert('Invoice ID already exists');</script>";
+    }
+    else {
+
     // Insert data into your invoice table
     $sql_invoice = "INSERT INTO invoice (invoice_id, user_name, user_business, user_address, user_email, user_mobile, user_gst, user_other_details,cgst, cname, cbusiness, caddress, cemail, cmobile, date, payment_terms, due_date, po_number, note, terms, discount, tax_type, tax, amount_paid, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
 $stmt_invoice = $conn->prepare($sql_invoice);
@@ -57,5 +70,6 @@ $stmt_invoice->bind_param("isssssssssssssssssssssdd", $invoice_id, $_POST['user_
 
     // Close the database connection
     $conn->close();
+}
 }
 ?>

@@ -396,7 +396,7 @@ if (!isset($_SESSION['id'])) {
     // Submit form data via AJAX when the form is submitted
     $("#add_form").submit(function (e) {
       e.preventDefault();
-      $("#add_btn").val('Adding...');
+      $("#add_btn").val('Loading...');
 
       // Collect data from dynamically added rows
       let dynamicRowsData = [];

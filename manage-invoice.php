@@ -74,6 +74,7 @@
                                     <thead>
                                       <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Invoice ID</th>
                                         <th scope="col">Customer</th>
                                         <th scope="col">Issue Date</th>
                                         <th scope="col">Due Date</th>
@@ -92,6 +93,7 @@
                                       ?>
                                       <tr>
                                         <th scope="row"><?php echo $i++; ?></th>
+                                        <td><?php echo $row['invoice_id'] ?></td>
                                         <td><?php echo $row['cname'] ?></td>
                                         <td><?php echo $row['date'] ?></td>
                                         <td><?php echo $row['due_date'] ?></td>

@@ -252,7 +252,10 @@ if (isset($_GET['invoice_id'])) {
                                     <div class="col-lg-7 col-md-7 col-sm-7">
                                         <div class="terms-conditions mb-30">
                                             <h3 class="inv-title-1 mb-10">Terms & Conditions</h3>
-                                            <?php echo $terms ?>
+                                            <?php
+                                            echo nl2br($terms);
+                                            ?>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5">
@@ -262,7 +265,8 @@ if (isset($_GET['invoice_id'])) {
                                                 <li><strong>Due Date:</strong> <?php echo $due_date ?></li>
                                                 <li><strong>Payment Terms:</strong> <?php echo $payment_terms ?></li>
                                                 <?php if (!empty($po_number)): ?> <li><strong>P O Number:</strong> <?php echo $po_number ?></li><?php endif; ?>
-                                                <li><strong>Notes:</strong> <?php echo $notes ?></li>
+                                                <li><strong contentEditable="true">Notes:</strong> <?php echo $notes ?></li>
+
 
                                             </ul>
                                         </div>
