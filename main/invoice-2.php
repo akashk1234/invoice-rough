@@ -263,13 +263,15 @@ if (isset($_GET['invoice_id'])) {
                                             <?php if (!empty($po_number)): ?>
                                                 <li><strong>PO Number:</strong> <?php echo $po_number ?></li>
                                             <?php endif; ?>
+                                            <li><strong contentEditable="true">Notes:</strong> <?php echo $notes ?></li>
+
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-7 col-sm-7">
                                     <div class="terms-conditions mb-30">
                                         <h3 class="inv-title-1">Terms & Conditions</h3>
-                                        <p><?php echo $terms ?></p>
+                                        <p><?php echo nl2br($terms); ?></p>
                                     </div>
                                 </div>
                             </div>

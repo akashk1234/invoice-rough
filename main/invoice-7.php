@@ -227,7 +227,8 @@ if (isset($_GET['invoice_id'])) {
                                         <?php if (!empty($po_number)): ?> 
                                                     <li><strong>P O Number:</strong> <?php echo $po_number ?></li>
                                                 <?php endif; ?>
-                                        <li><strong>Notes:</strong> <?php echo $notes ?></li>
+                                        <li><strong contentEditable="true">Notes:</strong> <?php echo $notes ?></li>
+
 
                                     </ul>
                                 </div>
@@ -235,7 +236,7 @@ if (isset($_GET['invoice_id'])) {
                             <div class="col-md-6 col-sm-6">
                                 <div class="nates mb-30">
                                     <h4 class="inv-title-1">Terms and Conditions</h4>
-                                    <p class="text-muted"><?php echo $terms ?></p>
+                                    <p class="text-muted"><?php echo nl2br($terms); ?></p>
                                 </div>
                             </div>
                         </div>
