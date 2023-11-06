@@ -227,7 +227,9 @@ if (isset($_GET['invoice_id'])) {
                                                 <td></td>
                                                 <td><strong>Grand Total</strong></td>
                                                 <td><strong>₹<?php 
-                                                $grandTotal = $subtotal - ($subtotal*$discount/100) + ($subtotal*$tax/100);
+                                                $dis = $subtotal-($subtotal * $discount / 100) ;
+                                                $tax_amount = $dis * ($tax / 100);
+                                                $grandTotal = $dis + $tax_amount;
                                                 echo $grandTotal;
                                                 ?></strong></td>
                                             </tr>

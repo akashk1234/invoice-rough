@@ -40,7 +40,9 @@
     $id = $_GET['id'];
     $q="delete from invoice where invoice_id = '$id'";
     delete($q);
-    
+    $r="delete from product where invoice_id = '$id'";
+    delete($r);
+
   }
 
 
