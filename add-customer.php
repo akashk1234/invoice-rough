@@ -40,9 +40,10 @@
 if(isset($_POST['submit'])){
   extract($_POST);
 
-  $q="insert into client (name, business, address, email, mobile) values ('$cname', '$cbusiness', '$caddress', '$cemail', '$cmobile')";
+  $q="insert into client (name, business, address, email, mobile, gst) values ('$cname', '$cbusiness', '$caddress', '$cemail', '$cmobile', '$cgst')";
   insert($q);
-  alert('inserted');
+  $res;
+  alert('New customer added');
   redirect('index.php');}
 ?>
 
@@ -90,9 +91,14 @@ if(isset($_POST['submit'])){
                                       <label for="floatingName">Email</label>
                                     </div>
             
-                                    <div class="form-floating mb-5">
+                                    <div class="form-floating mb-4">
                                       <input type="text" name="cmobile" class="form-control" id="floatingName" placeholder=" ">
                                       <label for="floatingName">Mobile number</label>
+                                    </div> 
+
+                                    <div class="form-floating mb-5">
+                                      <input type="text" name="cgst" class="form-control" id="floatingName" placeholder=" ">
+                                      <label for="floatingName">GST number</label>
                                     </div> 
 
                                     <div class="text-center">
@@ -102,19 +108,9 @@ if(isset($_POST['submit'])){
                                 </form>
                             </div>
                               
-
-
-
-
-  
-                        </div>
+                       </div>
                     </div>
-            
-
-            
-
-            
-
+  
                 </div>
             </div>
 

@@ -78,7 +78,11 @@ $res = select($q);
 
         <section class="section dashboard">
 
-            <div class="row">
+        <div class="container text-center">
+             <input type="submit" action="action.php"  name="submit" value="Edit content" class="btn btn-primary w-50 me-3" id="add_btn"></a>
+            </div>
+
+            <div class="row mt-5">
 
                  <div class="col-lg-3">                   
                     <a href="main/invoice-6.php?invoice_id=<?php echo $id; ?>">

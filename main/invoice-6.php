@@ -267,7 +267,7 @@ if (isset($_GET['invoice_id'])) {
                                                 <li><strong>Due Date:</strong> <?php echo $due_date ?></li>
                                                 <li><strong>Payment Terms:</strong> <?php echo $payment_terms ?></li>
                                                 <?php if (!empty($po_number)): ?> <li><strong>P O Number:</strong> <?php echo $po_number ?></li><?php endif; ?>
-                                                <li><strong contentEditable="true">Notes:</strong> <?php echo $notes ?></li>
+                                                <li><strong contentEditable="true">Notes:</strong> <?php echo nl2br($notes) ?></li>
 
 
                                             </ul>

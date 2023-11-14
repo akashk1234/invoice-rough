@@ -1,13 +1,15 @@
+
+
 <?php
 include 'connection.php';
 print_r($_SERVER['REQUEST_METHOD']);
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Extract form data
-    $invoice_id = $_POST["invoice_id"];
     
     
 
+    $invoice_id = $_POST["invoice_id"];
     // Initialize a connection to the database
     $conn = new mysqli('localhost', 'root', '', 'invoice');
 
@@ -28,13 +30,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $res = $result->fetch_assoc();
 
     if ($res) {
-        echo "<script>alert('Invoice ID already exists');</script>";
+        alert ('Invoice ID already exists');
     }
     else {
 
     // Insert data into your invoice table
     $sql_invoice = "INSERT INTO invoice (invoice_id, user_name, user_business, user_address, user_email, user_mobile, user_gst, user_other_details,cgst, cname, cbusiness, caddress, cemail, cmobile, date, payment_terms, due_date, po_number, note, terms, discount, tax_type, tax, amount_paid, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
+
 $stmt_invoice = $conn->prepare($sql_invoice);
+
 
 // Update the "d" in the bind_param to indicate a double (floating-point) data type
 $stmt_invoice->bind_param("isssssssssssssssssssssdd", $invoice_id, $_POST['user_name'], $_POST['user_business'], $_POST['user_address'], $_POST['user_email'], $_POST['user_mobile'], $_POST['gst'], $_POST['user_other_details'], $_POST['cgst'], $_POST['cname'], $_POST['cbusiness'], $_POST['caddress'], $_POST['cemail'], $_POST['cmobile'], $_POST['date'], $_POST['payment_terms'], $_POST['due_date'], $_POST['po_number'], $_POST['note'], $_POST['terms'], $_POST['discount'], $_POST['tax_type'], $_POST['tax'], $_POST['amount_paid']);
@@ -58,6 +62,23 @@ $stmt_invoice->bind_param("isssssssssssssssssssssdd", $invoice_id, $_POST['user_
             }
         }
         
+
+        // Insert data into client table
+        $sql_client = "INSERT INTO client (gst, name, business, address, email, mobile) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt_client = $conn->prepare($sql_client);
+        $stmt_client->bind_param("ssssss", $_POST['cgst'], $_POST['cname'], $_POST['cbusiness'], $_POST['caddress'], $_POST['cemail'], $_POST['cmobile']);
+        if (!$stmt_client->execute()) {
+            $conn->rollback();
+            echo "Error in executing statement: " . $stmt_client->error;
+            exit;
+        } else {
+            echo "Data inserted into client table successfully.";
+        }
+
+        // Commit the transaction
+        $conn->commit();
+
+        echo "Data inserted successfully.";
 
         // Commit the transaction
         $conn->commit();

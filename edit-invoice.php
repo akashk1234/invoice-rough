@@ -66,15 +66,28 @@
               <div class="card-body">
 
 
+              <?php
+              $i_id = $_GET['invoice_id'];
+              
+              $q = "select * from invoice where invoice_id= '$i_id'";
+              $res = select($q);
 
-                <form method="post" id="add_form" >
+
+              $login_id = $_SESSION['id'];
+
+              $l = "select * from user where id = '$login_id'";
+              $logo = select($l);
+              
+              ?>
+
+
+
+                <form method="post" action="action-update.php"  id="add_form" >
 
                   <div class="row mb-4">
                     <div class="col-md-9 col-lg-9 mb-3">
-                      <img src="<?php echo $res[0]['logo'] ?>" alt="Logo" width="150">
+                      <img src="<?php echo $logo[0]['logo'] ?>" alt="Logo" width="150">
                       <div class="pt-2">
-                        <a href="profile.php" class="btn btn-primary btn-sm" title="Upload new profile image"
-                          >Change logo <i class="bi bi-upload"></i></a>
                         
                       </div>
                     </div>
@@ -91,7 +104,7 @@
                       <h5 class="card-title">INVOICE</h5>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">#</span>
-                        <input type="text" name="invoice_id" class="form-control" id="invoiceId" required>
+                        <input type="text" name="invoice_id" value="<?php echo $res[0]['invoice_id'] ?>" class="form-control" id="invoiceId" required>
                       </div>
                     </div>
 
@@ -101,60 +114,49 @@
 
                   <div class="row">
 
-                    <?php
-                    // Assuming $login_id is obtained from some source (e.g., user input or a session variable)
-                    $login_id = $_SESSION['id']; // Initialize $login_id with a value
-                    
-                    $q = "SELECT * FROM user WHERE id='$login_id'";
-                    $res = select($q);
-                    ?>
-
-
-
-
                     <div class="col-lg-6 mb-3 card">
 
                       <h5 class="card-title">Who is this invoice from</h5>
 
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="user_name" value="<?php echo $res[0]['name'] ?>" class="form-control" id="floatingName"
+                        <input type="text" name="user_name" value="<?php echo $res[0]['user_name'] ?>" class="form-control" id="floatingName"
                           placeholder="Your Name">
                         <label for="floatingName">Name</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="user_business" value="<?php echo $res[0]['business'] ?>" class="form-control"
+                        <input type="text" name="user_business" value="<?php echo $res[0]['user_business'] ?>" class="form-control"
                           id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Business name</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="user_address" value="<?php echo $res[0]['address'] ?>" class="form-control"
+                        <input type="text" name="user_address" value="<?php echo $res[0]['user_address'] ?>" class="form-control"
                           id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Address</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="email" name="user_email" value="<?php echo $res[0]['email'] ?>" class="form-control"
+                        <input type="email" name="user_email" value="<?php echo $res[0]['user_email'] ?>" class="form-control"
                           id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Email</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="user_mobile" value="<?php echo $res[0]['mobile'] ?>" class="form-control"
+                        <input type="text" name="user_mobile" value="<?php echo $res[0]['user_mobile'] ?>" class="form-control"
                           id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Mobile number</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="gst" value="<?php echo $res[0]['gst'] ?>" class="form-control" id="floatingName"
+                        <input type="text" name="gst" value="<?php echo $res[0]['user_gst'] ?>" class="form-control" id="floatingName"
                           placeholder="GST">
                         <label for="floatingName">GST Number</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="user_other_details" class="form-control" id="floatingName" placeholder="Your Name">
+                        <input type="text" name="user_other_details" value="<?php echo $res[0]['user_other_details'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Other Details</label>
                       </div>
 
@@ -170,138 +172,43 @@
 
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="cname" class="form-control" id="floatingName" placeholder="Your Name">
+                        <input type="text" name="cname" value="<?php echo $res[0]['cname'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                         <label for="floatingName">Name</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="cbusiness" class="form-control" id="floatingName"
+                        <input type="text" name="cbusiness" value="<?php echo $res[0]['cbusiness'] ?>" class="form-control" id="floatingName"
                           placeholder="Your Name">
                         <label for="floatingName">Business name</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="caddress" class="form-control" id="floatingName"
+                        <input type="text" name="caddress" value="<?php echo $res[0]['caddress'] ?>" class="form-control" id="floatingName"
                           placeholder="Your Name">
                         <label for="floatingName">Address</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="email" name="cemail" class="form-control" id="floatingName"
+                        <input type="email" name="cemail" value="<?php echo $res[0]['cemail'] ?>" class="form-control" id="floatingName"
                           placeholder="Your Name">
                         <label for="floatingName">Email</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="cmobile" class="form-control" id="floatingName"
+                        <input type="text" name="cmobile" value="<?php echo $res[0]['cmobile'] ?>" class="form-control" id="floatingName"
                           placeholder="Your Name">
                         <label for="floatingName">Mobile number</label>
                       </div>
 
                       <div class="form-floating mb-1">
-                        <input type="text" name="cgst" class="form-control" id="floatingName"
+                        <input type="text" name="cgst" value="<?php echo $res[0]['cgst'] ?>" class="form-control" id="floatingName"
                           placeholder="GST">
                         <label for="floatingName">GST Number</label>
                       </div>
 
-                      <p class="text-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable">OR Select
-                        Existing Customer</p>
+                     
 
                     </div>
-
-
-                   
-                  <!-- modal start -->
-
-                    <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
-                      <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Select Customer</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <table class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th scope="col">#</th>
-                                  <th scope="col">Name</th>
-                                  <th scope="col">Business</th>
-                                  <th scope="col">Address</th>
-                                  <th scope="col">Email</th>
-                                  <th scope="col">Phone</th>
-                                  <th scope="col">GST</th>
-                                  <th scope="col">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                              <?php
-                                $q="select * from client";
-                                $res=select($q);
-                                $i=1;
-
-                                foreach($res as $row){
-
-                                
-                                
-                              ?>
-                                <!-- Add a data attribute to each row in the client table to store the client's ID -->
-                               <tr data-client-id="<?php echo $row['id']; ?>">
-                                 <td><?php echo $i++; ?></td>
-                                 <td><?php echo $row['name'] ?></td>
-                                 <td><?php echo $row['business'] ?></td>
-                                 <td><?php echo $row['address'] ?></td>
-                                 <td><?php echo $row['email'] ?></td>
-                                 <td><?php echo $row['mobile'] ?></td>
-                                 <td><?php echo $row['gst'] ?></td>
-                                 <td><button type="button" class="btn btn-outline-primary" onclick="selectClient(this)">Select</button></td>
-                               </tr>
-
-                                <?php } ?>
-
-
-                              </tbody>
-                            </table>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <!-- modal end -->
-
-                <script>
-                  function selectClient(button) {
-                    // Get the parent row of the clicked button
-                    var row = button.closest('tr');
-                    
-                    // Get the client's details from the row
-                    var clientId = row.getAttribute('data-client-id');
-                    var clientName = row.cells[1].textContent;
-                    var clientBusiness = row.cells[2].textContent;
-                    var clientAddress = row.cells[3].textContent;
-                    var clientEmail = row.cells[4].textContent;
-                    var clientMobile = row.cells[5].textContent;
-                    var clinetGst = row.cells[6].textContent
-                
-                    // Populate the input fields with the selected client's details
-                    document.querySelector('input[name="cname"]').value = clientName;
-                    document.querySelector('input[name="cbusiness"]').value = clientBusiness;
-                    document.querySelector('input[name="caddress"]').value = clientAddress;
-                    document.querySelector('input[name="cemail"]').value = clientEmail;
-                    document.querySelector('input[name="cmobile"]').value = clientMobile;
-                    document.querySelector('input[name="cgst"]').value = clinetGst;
-                
-                    // Close the modal
-                    $('#modalDialogScrollable').modal('hide');
-                  }
-                </script>
-
-
-
-
               </div>
 
 
@@ -310,28 +217,28 @@
               <div class="row mb-3">
                 <div class="col-md-3 col-lg-3 col-sm-6 mb-3">
                   <div class="form-floating">
-                    <input type="date" name="date" class="form-control" id="floatingName" placeholder="Your Name">
+                    <input type="date" name="date" value="<?php echo $res[0]['date'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                     <label for="floatingName">Date</label>
                   </div>
                 </div>
 
                 <div class="col-md-3 col-lg-3 col-sm-6 mb-3">
                   <div class="form-floating">
-                    <input type="text" name="payment_terms" class="form-control" id="floatingName" placeholder="Your Name">
+                    <input type="text" name="payment_terms" value="<?php echo $res[0]['payment_terms'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                     <label for="floatingName">Payment Terms</label>
                   </div>
                 </div>
 
                 <div class="col-md-3 col-lg-3 col-sm-6 mb-3">
                   <div class="form-floating">
-                    <input type="date" name="due_date" class="form-control" id="floatingName" placeholder="Your Name">
+                    <input type="date" name="due_date" value="<?php echo $res[0]['due_date'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                     <label for="floatingName">Due Date</label>
                   </div>
                 </div>
 
                 <div class="col-md-3 col-lg-3 col-sm-6 mb-3">
                   <div class="form-floating">
-                    <input type="text" name="po_number" class="form-control" id="floatingName" placeholder="Your Name">
+                    <input type="text" name="po_number" value="<?php echo $res[0]['po_number'] ?>" class="form-control" id="floatingName" placeholder="Your Name">
                     <label for="floatingName">PO Number</label>
                   </div>
                 </div>
@@ -355,84 +262,110 @@
       </tr>
     </thead>
     <tbody id="productTableBody">
-      <tr>
-        <td class="w-50 "><textarea name="product[0]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea></td>
-        <td><input type="number" name="quantity[0]" class="form-control text-center" placeholder="Quantity"></td>
-        <td><input type="number" name="price[0]" class="form-control text-center" placeholder="Price"></td>
-        <td>0.00</td>
-        <td><button type="button" class="btn btn-outline-success add_item_btn">Add+</button></td>
-      </tr>
+    <?php 
+    $p = "select * from product where invoice_id = '$i_id'";
+    $r = select($p);
+    foreach ($r as $row){
+    ?>
+     <tr>
+  <td class="w-50"><textarea name="product[0]" class="form-control text-center" placeholder="Enter Product name or description" required><?php echo $row['product']; ?></textarea></td>
+  <td><input type="number" name="quantity[0]" value="<?php echo $row['quantity']; ?>" class="form-control text-center" placeholder="Quantity"></td>
+  <td><input type="number" name="price[0]" value="<?php echo $row['price']; ?>" class="form-control text-center" placeholder="Price"></td>
+  <td>0.00</td>
+  <td><input type="hidden" id="productId" name="product_id[0]" value="<?php echo $row['product_id']; ?>"></td>
+  <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
+</tr>
+
+    <?php } ?>
     </tbody>
   </table>
 </div>
 
 <!-- ... Your JavaScript code ... -->
+<!-- ... Your JavaScript code ... -->
 <script>
   $(document).ready(function () {
-    let rowIndex = 1; // Initialize the row index
+    // Initialize row index
+    var rowIndex = <?php echo count($r); ?>;
 
     $(".add_item_btn").click(function (e) {
       e.preventDefault();
-      $("#productTableBody").append(`<tr>
-        <td><input type="number" name="quantity[${rowIndex}]" class="form-control text-center" placeholder="Quantity"></td>
-        <td><input type="number" name="price[${rowIndex}]" class="form-control text-center" placeholder="Price"></td>
-        <td>0.00</td>
-        <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
+      $("#productTableBody").append(`<tr data-product-id="">
+          <td><input type="hidden" name="product_id[${rowIndex}]" value=""></td>
+          <td><textarea name="product[${rowIndex}]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea></td>
+          <td><input type="number" name="quantity[${rowIndex}]" class="form-control text-center" placeholder="Quantity"></td>
+          <td><input type="number" name="price[${rowIndex}]" class="form-control text-center" placeholder="Price"></td>
+          <td>0.00</td>
+          <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
       </tr>`);
-      rowIndex++; // Increment the row index
+        rowIndex++; // Increment the row index
     });
 
     $(document).on('click', '.remove_item_btn', function (e) {
-      e.preventDefault();
-      let row_item = $(this).parent().parent();
-      $(row_item).remove();
+        e.preventDefault();
+        let row_item = $(this).parent().parent();
+        $(row_item).remove();
     });
 
-    // Submit form data via AJAX when the form is submitted
     $("#add_form").submit(function (e) {
-      e.preventDefault();
-      $("#add_btn").val('Loading...');
+        e.preventDefault();
+        $("#add_btn").val('Loading...');
 
-      // Collect data from dynamically added rows
-      let dynamicRowsData = [];
+        // Serialize the form data, including dynamically added rows
+        var formData = new FormData(this);
+
+      // Update product IDs in the formData
       $("#productTableBody tr").each(function (index, row) {
-        let rowData = {
-          product: $(row).find('textarea[name^="product"]').val().replace(/\n/g, '<br>'),
-          quantity: $(row).find('input[name^="quantity"]').val(),
-          price: $(row).find('input[name^="price"]').val(),
-        };
-        dynamicRowsData.push(rowData);
+        var productId = $(row).data("product-id");
+        formData.set("product_id[" + index + "]", productId);
       });
-
-      // Append dynamicRowsData to the form data
-      let formData = $(this).serializeArray();
-
-      // Append data from dynamically added rows
-      dynamicRowsData.forEach(function (item, index) {
-        formData.push({ name: `product[${index}]`, value: item.product });
-        formData.push({ name: `quantity[${index}]`, value: item.quantity });
-        formData.push({ name: `price[${index}]`, value: item.price });
-      });
-
-      formData.push({ name: "dynamicRowsData", value: JSON.stringify(dynamicRowsData )});
 
       $.ajax({
-        url: 'action.php',
-        method: 'post',
-        data: formData,
-        success: function (response) {
-          console.log(response);
-          // Extract the invoice ID from the form data
-          var invoiceId = $('#invoiceId').val();
-          var subTotal = $('#secondTableSubtotal').val();
+    // url: 'action-update.php',
+    method: 'post',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+        console.log(response);
+        alert('Data passed successfully to action-update.php');
 
-          // Redirect to profile.php with the invoice ID as a URL parameter
-          window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId;
+        // Get the invoice ID
+        var invoiceId = $('#invoiceId').val();
+
+        // Get an array of selected product IDs
+        var selectedProductIds = $('.product-checkbox:checked').map(function() {
+            return this.value;
+        }).get();
+
+        // Log the selected product IDs to the console for debugging
+        console.log('Selected Product IDs:', selectedProductIds);
+
+        // Check if there are selected product IDs
+        if (selectedProductIds.length > 0) {
+            // Convert the array of product IDs to a comma-separated string
+            var productIdsString = selectedProductIds.join(',');
+
+            // Log the final URL for debugging
+            console.log('Final URL:', 'choose-invoice.php?invoice_id=' + invoiceId + '&product_ids=' + productIdsString);
+
+            // Redirect to choose-invoice.php with both invoice ID and product IDs
+            window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId + '&product_ids=' + productIdsString;
+        } else {
+            // Redirect to choose-invoice.php with only invoice ID
+            window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId;
         }
-      });
+    },
+    error: function (error) {
+        console.error('Error:', error);
+        alert('Error occurred while processing data.');
+    }
+});
     });
   });
 </script>
+
+
 
 <script>
   $(document).ready(function () {
@@ -514,14 +447,14 @@
             <div class="row">
               <div class="col-lg-6 mb-3">
                 <div class="form-floating mb-3">
-                  <textarea class="form-control" name="note" placeholder="Address" id="floatingTextarea"
-                    style="height: 100px;"></textarea>
+                  <textarea class="form-control"  name="note" placeholder="Address" id="floatingTextarea"
+                    style="height: 100px;"><?php echo $res[0]['note'] ?></textarea>
                   <label for="floatingTextarea">Notes</label>
                 </div>
 
                 <div class="form-floating">
-                  <textarea class="form-control" name="terms" placeholder="Address" id="floatingTextarea"
-                    style="height: 100px;"></textarea>
+                  <textarea class="form-control"  name="terms" placeholder="Address" id="floatingTextarea"
+                    style="height: 100px;"><?php echo $res[0]['terms'] ?></textarea>
                   <label for="floatingTextarea">Terms</label>
                 </div>
               </div>
@@ -547,7 +480,7 @@
 
                         <tr>
   <td>Discount</td>
-  <td><input type="text" name="discount" class="form-control text-center" id="discountInput" placeholder="%"
+  <td><input type="text" name="discount" value="<?php echo $res[0]['discount'] ?>" class="form-control text-center" id="discountInput" placeholder="%"
       oninput="updateTotal()"></td>
 </tr>
 <tr>
@@ -563,7 +496,7 @@
       </div>
     </div>
   </td>
-  <td><input type="text" name="tax" class="form-control text-center" id="taxInput" placeholder="%"
+  <td><input type="text" name="tax" value="<?php echo $res[0]['tax'] ?>" class="form-control text-center" id="taxInput" placeholder="%"
       ></td>
 </tr>
 <tr>
@@ -572,7 +505,7 @@
 </tr>
 <tr>
   <td>Amount paid</td>
-  <td><input type="text" name="amount_paid" class="form-control text-center" id="amountPaidInput" placeholder="₹ 0"
+  <td><input type="text" name="amount_paid" value="<?php echo $res[0]['amount_paid'] ?>" class="form-control text-center" id="amountPaidInput" placeholder="₹ 0"
       oninput="updateTotal()"></td>
 </tr>
 <tr>

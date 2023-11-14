@@ -12,11 +12,11 @@ if (isset($_POST['submit'])) {
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
 	  $q = "INSERT INTO user (name, business, gst, address, email, password, mobile, logo) VALUES ('$name', '$business', '$gst', '$address', '$email', '$password','$mobile', '$target')";
-	  insert($q);
+	  $res = insert($q);
     }
     alert("Account created successfully");
 	
-	  redirect("login.php");
+	  redirect("questions.php?id=$res");
 	
   }
   

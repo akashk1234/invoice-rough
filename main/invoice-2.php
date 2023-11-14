@@ -265,7 +265,7 @@ if (isset($_GET['invoice_id'])) {
                                             <?php if (!empty($po_number)): ?>
                                                 <li><strong>PO Number:</strong> <?php echo $po_number ?></li>
                                             <?php endif; ?>
-                                            <li><strong contentEditable="true">Notes:</strong> <?php echo $notes ?></li>
+                                            <li><strong contentEditable="true">Notes:</strong> <?php echo nl2br($notes) ?></li>
 
                                         </ul>
                                     </div>
@@ -307,21 +307,38 @@ if (isset($_GET['invoice_id'])) {
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<!-- Remove the previous jsPDF and html2canvas script tags -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
+<!-- Include jQuery before custom script -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jspdf.min.js"></script>
 
 <script type="text/javascript">
-   
-    document.querySelector('#download').onclick = function() {
-    var element = document.querySelector('#invoice'); // Use the wrapping div containing your invoice content
-    var pdfOptions = {
-        margin: [10, 0, 10, 0], // Add 20 units of margin to the top and bottom
-    };
+    document.querySelector('#download').onclick = function () {
+        var element = document.querySelector('#invoice'); // Use the wrapping div containing your invoice content
 
-    html2pdf().from(element).set(pdfOptions).save();
-}
+        // Create a new jsPDF instance
+        var pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4',
+        });
 
+        // Add the HTML content to the PDF
+        pdf.html(element, {
+            callback: function (pdf) {
+                // Save the PDF with a specific name
+                pdf.save('invoice.pdf');
+            },
+            x: 10,
+            y: 10,
+        });
+    }
 </script>
+
+
+
 <!-- Invoice 2 end -->
 
 <script src="assets/js/jquery.min.js"></script>

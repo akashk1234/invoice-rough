@@ -1,5 +1,14 @@
 <?php include 'connection.php';
+
 session_start();
+
+// Check if the user is not logged in (no active session)
+if (!isset($_SESSION['id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit; // Terminate the script to prevent further execution
+}
+
 
 // Assuming $login_id is obtained from some source (e.g., user input or a session variable)
 $login_id = $_SESSION['id']; // Initialize $login_id with a value
