@@ -263,20 +263,24 @@
     </thead>
     <tbody id="productTableBody">
     <?php 
-    $p = "select * from product where invoice_id = '$i_id'";
-    $r = select($p);
-    foreach ($r as $row){
-    ?>
-     <tr>
-  <td class="w-50"><textarea name="product[0]" class="form-control text-center" placeholder="Enter Product name or description" required><?php echo $row['product']; ?></textarea></td>
-  <td><input type="number" name="quantity[0]" value="<?php echo $row['quantity']; ?>" class="form-control text-center" placeholder="Quantity"></td>
-  <td><input type="number" name="price[0]" value="<?php echo $row['price']; ?>" class="form-control text-center" placeholder="Price"></td>
-  <td>0.00</td>
-  <td><input type="hidden" id="productId" name="product_id[0]" value="<?php echo $row['product_id']; ?>"></td>
-  <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
-</tr>
+$p = "select * from product where invoice_id = '$i_id'";
+$r = select($p);
+foreach ($r as $index => $row){
+?>
+ <tr>
+    <td class="w-50"><textarea name="product[<?php echo $index; ?>]" class="form-control text-center" placeholder="Enter Product name or description" required><?php echo $row['product']; ?></textarea></td>
+    <td><input type="number" name="quantity[<?php echo $index; ?>]" value="<?php echo $row['quantity']; ?>" class="form-control text-center" placeholder="Quantity"></td>
+    <td><input type="number" name="price[<?php echo $index; ?>]" value="<?php echo $row['price']; ?>" class="form-control text-center" placeholder="Price"></td>
+    <td>0.00</td>
+    <td><input type="hidden" name="product_id[<?php echo $index; ?>]" value="<?php echo $row['product_id']; ?>"></td>
+    <td><button type="button" class="btn btn-outline-danger add_item_btn">Add</button></td>
+    <td><button type="button" class="btn btn-outline-danger remove_item_btn" data-row-index="<?php echo $index; ?>">Remove</button></td>
+ </tr>
+<?php } ?>
 
-    <?php } ?>
+
+
+
     </tbody>
   </table>
 </div>
@@ -285,26 +289,62 @@
 <!-- ... Your JavaScript code ... -->
 <script>
   $(document).ready(function () {
-    // Initialize row index
+    // Calculate the initial row index based on the number of existing rows
     var rowIndex = <?php echo count($r); ?>;
 
-    $(".add_item_btn").click(function (e) {
-      e.preventDefault();
-      $("#productTableBody").append(`<tr data-product-id="">
-          <td><input type="hidden" name="product_id[${rowIndex}]" value=""></td>
-          <td><textarea name="product[${rowIndex}]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea></td>
-          <td><input type="number" name="quantity[${rowIndex}]" class="form-control text-center" placeholder="Quantity"></td>
-          <td><input type="number" name="price[${rowIndex}]" class="form-control text-center" placeholder="Price"></td>
-          <td>0.00</td>
-          <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
-      </tr>`);
-        rowIndex++; // Increment the row index
+$(document).on("click", ".add_item_btn", function (e) {
+    e.preventDefault();
+
+    // Increment the row index
+    rowIndex++;
+
+    // Generate a unique identifier for the new row
+    var uniqueId = Date.now();
+
+    // Update this line to include the correct product ID
+    $("#productTableBody").append(`
+        <tr data-row-id="${uniqueId}">
+            <td class="w-50">
+                <textarea name="product[${uniqueId}]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea>
+            </td>
+            <td><input type="number" name="quantity[${uniqueId}]" class="form-control text-center" placeholder="Quantity"></td>
+            <td><input type="number" name="price[${uniqueId}]" class="form-control text-center" placeholder="Price"></td>
+            <td>0.00</td>
+            <td>
+                <input type="hidden" name="product_id[${uniqueId}]" value="">
+                <button type="button" class="btn btn-outline-danger add_item_btn">Add</button>
+                
+            </td>
+        </tr>`);
+
+    // Remove the click event handler for all "Add" buttons
+    $(".add_item_btn").off("click");
+
+    // Rebind the click event handler for the newly added "Add" button
+    $(".add_item_btn").on("click", function (e) {
+        // Trigger the click event for the newly added "Add" button
+        $(this).trigger("click");
     });
+});
+
+
+
+
+// Function to update product IDs for all rows
+function updateProductIds() {
+        $("#productTableBody tr").each(function (index) {
+            $(this).find(`input[name^='product_id']`).attr('name', `product_id[${index}]`);
+        });
+    }
+
+    // Call the function to update product IDs initially
+    updateProductIds();
 
     $(document).on('click', '.remove_item_btn', function (e) {
         e.preventDefault();
-        let row_item = $(this).parent().parent();
+        let row_item = $(this).closest("tr");
         $(row_item).remove();
+        updateProductIds();
     });
 
     $("#add_form").submit(function (e) {
@@ -314,52 +354,31 @@
         // Serialize the form data, including dynamically added rows
         var formData = new FormData(this);
 
-      // Update product IDs in the formData
-      $("#productTableBody tr").each(function (index, row) {
-        var productId = $(row).data("product-id");
-        formData.set("product_id[" + index + "]", productId);
-      });
+        // Update product IDs in the formData
+        updateProductIds();
 
-      $.ajax({
-    // url: 'action-update.php',
-    method: 'post',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function (response) {
-        console.log(response);
-        alert('Data passed successfully to action-update.php');
+        $.ajax({
+            url: 'action-update.php',
+            method: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response);
+                // alert('Data passed successfully to action-update.php');
 
-        // Get the invoice ID
-        var invoiceId = $('#invoiceId').val();
+                var invoiceId = $('#invoiceId').val();
+                console.log('Invoice ID:', invoiceId); // Log the invoice ID
 
-        // Get an array of selected product IDs
-        var selectedProductIds = $('.product-checkbox:checked').map(function() {
-            return this.value;
-        }).get();
+                var subTotal = $('#secondTableSubtotal').val();
 
-        // Log the selected product IDs to the console for debugging
-        console.log('Selected Product IDs:', selectedProductIds);
-
-        // Check if there are selected product IDs
-        if (selectedProductIds.length > 0) {
-            // Convert the array of product IDs to a comma-separated string
-            var productIdsString = selectedProductIds.join(',');
-
-            // Log the final URL for debugging
-            console.log('Final URL:', 'choose-invoice.php?invoice_id=' + invoiceId + '&product_ids=' + productIdsString);
-
-            // Redirect to choose-invoice.php with both invoice ID and product IDs
-            window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId + '&product_ids=' + productIdsString;
-        } else {
-            // Redirect to choose-invoice.php with only invoice ID
-            window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId;
-        }
-    },
-    error: function (error) {
-        console.error('Error:', error);
-        alert('Error occurred while processing data.');
-    }
+                // Redirect to choose-invoice.php with the invoice ID as a URL parameter
+                window.location.href = 'choose-invoice.php?invoice_id=' + invoiceId;
+            },
+            error: function (error) {
+                console.error('Error:', error);
+                // alert('Error occurred while processing data.');
+            }
 });
     });
   });
@@ -406,16 +425,16 @@
       $("#balanceDue").text(balanceDue.toFixed(2));
     }
 
-    // Bind the click event for the "Add" button only once
-    $(".add_item_btn").unbind("click").click(function (e) {
-      e.preventDefault();
-      $("#productTableBody").append(`<tr>
-        <td class="w-50"><textarea name="product[]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea></td>
-        <td><input type="number" name="quantity[]" class="form-control text-center" placeholder="Quantity"></td>
-        <td><input type="number" name="price[]" class="form-control text-center" placeholder="Price"></td>
-        <td>0.00</td>
-        <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
-      </tr>`);
+    // // Bind the click event for the "Add" button only once
+    // $(".add_item_btn").unbind("click").click(function (e) {
+    //   e.preventDefault();
+    //   $("#productTableBody").append(`<tr>
+    //     <td class="w-50"><textarea name="product[]" class="form-control text-center" placeholder="Enter Product name or description" required></textarea></td>
+    //     <td><input type="number" name="quantity[]" class="form-control text-center" placeholder="Quantity"></td>
+    //     <td><input type="number" name="price[]" class="form-control text-center" placeholder="Price"></td>
+    //     <td>0.00</td>
+    //     <td><button type="button" class="btn btn-outline-danger remove_item_btn">Remove</button></td>
+    //   </tr>`);
       updateTotal(); // Update totals after adding a new row
     });
 
